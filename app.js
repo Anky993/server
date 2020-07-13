@@ -19,7 +19,8 @@ MongoClient.connect(mongoconfig.url,{ useUnifiedTopology: true})
 .catch(err => console.error(err.stack))
 
 app.get('/test', (req,res)=>{
-   connection.db(mongoconfig.database).collection('mycol').find().toArray((err, result)=>{
+	console.log(req);
+   connection.db(mongoconfig.database).collection('mycol').find( { email: req.body.email, password: req.body.password } ).toArray((err, result)=>{
       if(err) throw err;
       res.json(result);
 	  console.log("posting");
@@ -34,20 +35,30 @@ app.get('/:name', (req,res)=>{
       console.log(result);
    })
 })
-
+app.post('/test', (req,res)=>{
+   console.log("dd");
+   console.log(req);
+   connection.db(mongoconfig.database).collection('mycol').find( { email: req.body.email, password: req.body.password } ).toArray((err, result)=>{
+      if(err) throw err;
+      res.json(result);
+	  console.log("posting");
+      console.log(result);
+   })
+})
 
 
 
 // obj = {"name":"dfdsf",
 // "adsfadsf":"asfasd"}    
 
-app.post('/test', (req,res)=>{
-   console.log("dd");
-   connection.db(mongoconfig.database).collection('mycol').insertOne(req.body, function (err, result) {
-      if(err) throw err;
-      res.json(req.body);
-      console.log(req.body);
-   })
-})
+//app.post('/test', (req,res)=>{
+  // console.log("dd");
+   //connection.db(mongoconfig.database).collection('mycol').insertOne(req.body, function (err, result) {
+  //    if(err) throw err;
+   //   res.json(req.body);
+    //  console.log(req.body);
+   //})
+//})
 app.listen(9000);
+
 
